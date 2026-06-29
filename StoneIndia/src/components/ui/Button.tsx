@@ -24,17 +24,21 @@ export default function Button({
   const baseStyles = "inline-flex items-center justify-center font-medium transition-all duration-300 rounded-sm";
   
   const variants = {
-    primary: "bg-gold text-white hover:bg-gold-600 px-8 py-4",
+    primary: "btn-custom-animated",
     secondary: "bg-neutral-900 text-white hover:bg-neutral-800 px-8 py-4",
     outline: "border border-gold text-gold hover:bg-gold hover:text-white px-8 py-4"
   };
 
-  const combinedClassName = `${baseStyles} ${variants[variant]} ${className}`;
+  const combinedClassName = variant === 'primary' 
+    ? `btn-custom-animated ${className}` 
+    : `${baseStyles} ${variants[variant]} ${className}`;
+
+  const renderChildren = variant === 'primary' ? <span>{children}</span> : children;
 
   if (to) {
     return (
       <Link to={to} className={combinedClassName}>
-        {children}
+        {renderChildren}
       </Link>
     );
   }
@@ -42,14 +46,14 @@ export default function Button({
   if (href) {
     return (
       <a href={href} className={combinedClassName} target="_blank" rel="noreferrer">
-        {children}
+        {renderChildren}
       </a>
     );
   }
 
   return (
     <button type={type} onClick={onClick} className={combinedClassName}>
-      {children}
+      {renderChildren}
     </button>
   );
 }

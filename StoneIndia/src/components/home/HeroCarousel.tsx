@@ -53,6 +53,7 @@ export default function HeroCarousel() {
 
   return (
     <div className="relative h-screen min-h-[600px] w-full bg-neutral-950 overflow-hidden flex items-center justify-center pt-20">
+      {/* Background Slider */}
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={currentIndex}
@@ -63,56 +64,88 @@ export default function HeroCarousel() {
           exit="exit"
           className="absolute inset-0 w-full h-full"
         >
-          {/* Background Image Placeholder */}
-          <div className="absolute inset-0 bg-neutral-800">
-             <div className="w-full h-full object-cover opacity-40 mix-blend-overlay bg-gradient-to-r from-neutral-950 to-neutral-800"></div>
-             {/* TODO: replace with real Stone India hero photos based on currentIndex */}
-             <div className="absolute inset-0 flex items-center justify-center text-neutral-600/30 text-4xl font-display font-bold uppercase tracking-widest pointer-events-none">
-                <img className="w-full h-full object-cover opacity-100 mix-blend-overlay from-neutral-800 to-neutral-500" src="/hero.jpg" /> 
-             </div>
-          </div>
-          
-          {/* Content */}6
-          <div className="absolute inset-0 flex flex-col justify-center max-w-7xl mx-auto px-4 lg:px-8">
-            <div className="max-w-2xl relative z-20">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="flex items-center gap-4 mb-6"
-              >
-                <div className="w-12 h-px bg-gold"></div>
-                <span className="uppercase tracking-widest text-gold font-bold text-sm">
-                  {heroBanners[currentIndex].subtitle}
-                </span>
-              </motion.div>
-              
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="text-5xl md:text-7xl font-display font-bold text-white mb-10 leading-[1.1]"
-              >
-                {heroBanners[currentIndex].title}
-              </motion.h1>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              >
-                <Link
-                  to={heroBanners[currentIndex].link}
-                  className="inline-flex items-center gap-3 bg-gold hover:bg-gold-600 text-white px-8 py-4 font-medium transition-all duration-300 group rounded-sm"
-                >
-                  {heroBanners[currentIndex].ctaText}
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
-            </div>
+          {/* Background Image */}
+          <div className="absolute inset-0 ">
+             <img 
+               className="w-full h-full object-cover" 
+               src={heroBanners[currentIndex].image} 
+               alt={heroBanners[currentIndex].title}
+             /> 
+             <div className="absolute inset-0"></div>
           </div>
         </motion.div>
       </AnimatePresence>
+
+      {/* Content (Fixed on screen, animates on slide change) */}
+      <div className="absolute inset-0 flex flex-col justify-center max-w-7xl mx-auto px-4 lg:px-8 z-20 pointer-events-none">
+        <div className="max-w-2xl relative z-20 pointer-events-auto">
+          <motion.div
+            key={`subtitle-${currentIndex}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex items-center gap-4 mb-6"
+          >
+            <div className="w-12 h-px bg-gold"></div>
+            <span className="uppercase tracking-widest text-gold font-bold text-sm">
+              {heroBanners[currentIndex].subtitle}
+            </span>
+          </motion.div>
+          
+          <motion.h1
+            key={`title-${currentIndex}`}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 1 },
+              visible: { 
+                opacity: 1, 
+                transition: { staggerChildren: 0.12, delayChildren: 0.4 } 
+              }
+            }}
+            className="text-5xl md:text-7xl font-display font-bold text-white mb-10 leading-[1.1] flex flex-wrap"
+          >
+            {heroBanners[currentIndex].title.split(' ').map((word, wordIndex) => (
+              <span key={wordIndex} className="inline-block mr-[0.25em]">
+                {word.split('').map((char, charIndex) => (
+                  <motion.span
+                    key={charIndex}
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                    className="inline-block"
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </span>
+            ))}
+          </motion.h1>
+          
+          <motion.div
+            key={`buttons-${currentIndex}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex flex-wrap gap-4 mt-8"
+          >
+            <Link
+              to={heroBanners[currentIndex].link}
+              className="btn-custom-animated w-48 gap-3"
+            >
+              <span>View Product</span>
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              to="/contact"
+              className="btn-custom-animated bg-white/10 hover:bg-white text-white hover:text-black border border-white/30 backdrop-blur-sm w-48 gap-3 transition-colors duration-300"
+            >
+              <span>Contact Us</span>
+            </Link>
+          </motion.div>
+        </div>
+      </div>
 
       {/* Navigation Controls */}
       <div className="absolute bottom-12 right-12 z-30 flex gap-4">

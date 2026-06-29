@@ -170,9 +170,9 @@ export default function ContactUs() {
 
               <button 
                 type="submit"
-                className="inline-flex items-center gap-3 bg-gold hover:bg-gold-600 text-white px-8 py-4 font-medium transition-all duration-300 group rounded-sm w-full md:w-auto justify-center"
+                className="btn-custom-animated w-48 gap-3"
               >
-                Send Message
+                <span>Send Message</span>
                 <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </form>

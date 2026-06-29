@@ -15,8 +15,10 @@ export default function Footer() {
 
                     {/* Col 1: Brand */}
                     <div>
-                        <Link to="/" className="inline-block mb-6 p-2 rounded-sm">
-                            <img className="h-12 w-auto object-contain" src={logoImg} alt="Stone India" />
+                        <Link to="/" className="inline-block mb-6">
+                            <div className="bg-white rounded-lg px-3 py-2 shadow-md inline-block">
+                                <img className="h-12 w-auto object-contain" src={logoImg} alt="Stone India" />
+                            </div>
                         </Link>
                         <p className="mb-6 leading-relaxed">
                             25+ years of experience as Natural Stone processors and traders, building strong relationships with factories and suppliers across India.
